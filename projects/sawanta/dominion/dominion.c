@@ -651,7 +651,9 @@ void adventurerEffect(struct gameState *state) {
 	int cardDrawn;
 	
 	while(drawntreasure<2) {
-		if (state->deckCount[currentPlayer] <1) {//if the deck is empty we need to shuffle discard and add to deck
+		// before bug:
+		// if (state->deckCount[currentPlayer] <1) {
+		if (state->deckCount[currentPlayer] <= 1) {//if the deck is empty we need to shuffle discard and add to deck
 			shuffle(currentPlayer, state);
 		}
 		
@@ -674,7 +676,9 @@ void adventurerEffect(struct gameState *state) {
 void smithyEffect(struct gameState *state, int handPos) {
 	int currentPlayer = whoseTurn(state);
 	
-	for (int i = 0; i < 3; i++) {
+	// before bug:
+	// for (int i = 0; i < 3; i++) {
+	for (int i = 0; i <= 3; i++) {
 		drawCard(currentPlayer, state);
 	}
 		
@@ -694,9 +698,10 @@ void council_roomEffect(struct gameState *state, int handPos) {
 	
 	//Each other player draws a card
 	for (int i = 0; i < state->numPlayers; i++) {
-		if ( i != currentPlayer ) {
+		// Bug: the if shouldn't be commented out
+		// if ( i != currentPlayer ) {
 			drawCard(i, state);
-		}
+		// }
 	}
 	
 	//put played card in played card pile
@@ -722,7 +727,8 @@ void sea_hagEffect(struct gameState* state) {
 			state->discard[i][state->discardCount[i]] = state->deck[i][state->deckCount[i]--];
 			state->deckCount[i]--;
 			state->discardCount[i]++;
-			state->deck[i][state->deckCount[i]--] = curse;//Top card now a curse
+			// Bug: should be = instead of ==
+			state->deck[i][state->deckCount[i]--] == curse;//Top card now a curse
 		}
 	}
 }
