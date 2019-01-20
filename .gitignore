@@ -35,12 +35,17 @@
 *.i*86
 *.x86_64
 *.hex
+project/sawanta/dominion/playdom
+project/sawanta/dominion/player
 
 # Debug files
 *.dSYM/
 *.su
 *.idb
 *.pdb
+
+# Backup files
+*~
 
 # Kernel Module Compile Results
 *.mod*
