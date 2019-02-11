@@ -37,7 +37,8 @@
 *.hex
 project/sawanta/dominion/playdom
 project/sawanta/dominion/player
-
+cardtest?
+unittest?
 
 # Debug files
 *.dSYM/
@@ -60,3 +61,8 @@ dkms.conf
 # local files
 projects/sawanta/dominion/test
 projects/.DS_Store
+
+# gcov files
+*.gcda
+*.gcno
+*.gcov
