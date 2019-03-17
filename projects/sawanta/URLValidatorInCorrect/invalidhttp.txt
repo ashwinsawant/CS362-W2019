@@ -1,0 +1,2 @@
+http://:80/test1?action=view
+http:///test1?action=view
