@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Random;
+import org.junit.Assert;
 
 //You can use this as a skeleton for your 3 different test approach
 //It is an optional to use this file, you can generate your own test file(s) to test the target function!
@@ -42,7 +43,9 @@ public class UrlValidatorTest extends TestCase {
            v6 = "http://go.au/t123/file",
            v7 = "http://go.au/t123/file?action=edit&mode=up",
            v8 = "http://0.0.0.0:65535?action=view",
-           v9 = "http://255.255.255.255?action=edit&mode=up";
+           v9 = "http://255.255.255.255?action=edit&mode=up",
+           v10 = "http://www.google.com/this/that",
+           v11 = "http://www.google.com/this~that";
 
        // Invalid URL forms
        String i0 = "http:/www.google.com", 	// Invalid scheme
@@ -68,6 +71,8 @@ public class UrlValidatorTest extends TestCase {
        System.out.println("URL: " + v7 + "\nResult: " + urlTest.isValid(v7) + '\n');
        System.out.println("URL: " + v8 + "\nResult: " + urlTest.isValid(v8) + '\n');
        System.out.println("URL: " + v9 + "\nResult: " + urlTest.isValid(v9) + '\n');
+       System.out.println("URL: " + v10 + "\nResult: " + urlTest.isValid(v10) + '\n');
+       System.out.println("URL: " + v11 + "\nResult: " + urlTest.isValid(v11) + '\n');
 
        // Run tests on invalid URLs
        System.out.println("\n\n*Invalid URL Tests*\n");
@@ -87,8 +92,10 @@ public class UrlValidatorTest extends TestCase {
    
    public void testYourFirstPartition()
    {
-	 //You can use this function to implement your First Partition testing
-	   System.out.println("Testing valid random URLs");
+	 //You can use this function to implement your First Partition testing (random testing)
+	   System.out.println();
+	   System.out.println("*Testing valid random URLs*");
+	   System.out.println("===========================");
 	   String alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 	   String alphanum = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 	   String schemechars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-.";
@@ -97,6 +104,9 @@ public class UrlValidatorTest extends TestCase {
 	   String pathchars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789:@&?=+,.!/~*'%$_;()";
 	   String qchars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789:@&?=+,.!/~*'%$_;()\\-";
 
+	   int pass = 0;
+	   int fail = 0;
+	   
 	   for(int i = 0; i < 10000; i++) {
 	   // Create the scheme fragment
 	   int n;
@@ -177,13 +187,27 @@ public class UrlValidatorTest extends TestCase {
 	   if(rand.nextInt(2) == 0) {
 		   url += query;
 	   }
-	   //if(i % 100 == 0); System.out.println("Random url is " + url);
+	   
+	   // if(i % 100 == 0); System.out.println("Random url is " + url);
 	   
 	   UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
-	   assertTrue(urlVal.isValid(url));
+	   
+	   try {
+		   assertTrue(urlVal.isValid(url));
+		   pass++;
+	   } catch (Throwable e) {
+		   fail++;
 	   }
+	   
+	   }
+	   
+	   System.out.println("Passed: " + pass);
+	   System.out.println("Failed: " + fail);
+	   System.out.println();
    }
    
+   
+   // List of TLDs taken from the UrlValidator code
    private static final String[] GENERIC_TLDS = new String[] {
 	        // Taken from Version 2017020400, Last Updated Sat Feb  4 07:07:01 2017 UTC
 	        "aaa", // aaa American Automobile Association, Inc.
@@ -1726,16 +1750,124 @@ public class UrlValidatorTest extends TestCase {
 	    };
    
    public void testYourSecondPartition(){
-		 //You can use this function to implement your Second Partition testing	   
+		 //You can use this function to implement your Second Partition testing	 
+	     // Random testing of URLs beginning with http
+	   System.out.println();
+	   System.out.println("*Testing valid random URLs starting with http*");
+	   System.out.println("===========================");
+	   String alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+	   String alphanum = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+	   String schemechars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-.";
+	   String unamechars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~!$&'()*+,;=";
+	   String hostchars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-";
+	   String pathchars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789:@&?=+,.!/~*'%$_;()";
+	   String qchars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789:@&?=+,.!/~*'%$_;()\\-";
 
+	   int pass = 0;
+	   int fail = 0;
+	   
+	   for(int i = 0; i < 10000; i++) {
+	   // Create the scheme fragment
+	   int n;
+	   String scheme = "";
+	   int l = rand.nextInt(50) + 1;
+	   for(int j = 0; j < l; j++) {
+		   if(j == 0) {
+			   n = rand.nextInt(alpha.length());
+			   scheme += alpha.substring(n, n+1);
+		   } else {
+			   n = rand.nextInt(schemechars.length());
+			   scheme += schemechars.substring(n,n+1);
+		   }
+	   }
+	   
+	   // Create the userinfo part
+	   String userinfo = "";
+	   l = rand.nextInt(50) + 1;
+	   for(int j = 0; j < l; j++) {
+		   n = rand.nextInt(unamechars.length());
+		   userinfo += unamechars.substring(n, n+1);
+	   }
+	   
+	   // Create the host part
+	   String host = "";
+	   l = rand.nextInt(62) + 1;
+	   for(int k = 0; k < l; k++) {
+		   if(k == 0 || k == l-1) {
+			   n = rand.nextInt(alphanum.length());
+			   host += alphanum.substring(n, n+1); 
+		   } else {
+			   n = rand.nextInt(hostchars.length());
+			   host += hostchars.substring(n, n+1);
+		   }
+	   }
+	   
+	   
+	   // Generate a path
+	   String path = "/";
+	   l = rand.nextInt(100) + 1;
+	   for(int j = 0; j < l; j++) {
+		   n = rand.nextInt(pathchars.length());
+		   if(pathchars.charAt(n) == '/' 
+				   && path.charAt(path.length()-1) == '/') continue;
+		   path += pathchars.substring(n, n+1);
+	   }
+	   
+	  // Generate a query
+	   String query = "?";
+	   l = rand.nextInt(100) + 1;
+	   for(int j = 0; j < l; j++) {
+		   n = rand.nextInt(qchars.length());
+		   query += qchars.substring(n, n+1);
+	   }
+	   
+	   String url = "http://";
+	   
+	   if(rand.nextInt(2) == 0) {
+		   url += userinfo + "@";
+	   }
+	   url += host;
+
+	   int rn2;
+	   String tld;
+	   if(rand.nextInt(2) == 0) {
+		   rn2 = rand.nextInt(GENERIC_TLDS.length);
+		   tld = GENERIC_TLDS[rn2];
+	   } else {
+		   rn2 = rand.nextInt(COUNTRY_CODE_TLDS.length);
+		   tld = COUNTRY_CODE_TLDS[rn2];
+	   }
+	   url += "." + tld;
+	   if(rand.nextInt(2) == 0) {
+		   url += ":" + rand.nextInt(65536);
+	   }
+	   url += path;
+	   if(rand.nextInt(2) == 0) {
+		   url += query;
+	   }
+	   
+	   UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
+	   
+	   try {
+		   assertTrue(urlVal.isValid(url));
+		   pass++;
+		   // if(i % 20 == 0) System.out.println("Passed: " + url);
+	   } catch (Throwable e) {
+		   fail++;
+		   // if(i % 20 == 0) System.out.println(e + ": " + url);
+	   }
+	   
+	   }
+	   
+	   System.out.println("Passed: " + pass);
+	   System.out.println("Failed: " + fail);
+	   System.out.println();
    }
    //You need to create more test cases for your Partitions if you need to 
    
    public void testIsValid()
    {
 	   //You can use this function for programming based testing
-	// Test URLs read from file
-	   //System.out.print("*Unit Testing URLs from File*\n=================\n");
 	   
 	   UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
 	   boolean result = false;
